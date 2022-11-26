@@ -1,10 +1,8 @@
-import Meta from '../components/Meta'
-import { useRouter } from 'next/router'
+import Meta from '../components/Meta';
+import type { PageContent, PageContent1 } from '../types/appTypes';
+import Parse from 'html-react-parser';
 
-export default function Home(props : any) {
-  console.log(props)
-  const router = useRouter()
-  const { slug } = router.query
+export default function Home(props : PageContent1) {
   return (
       <>
         <Meta pageTitle='Joenn' metaDescription='Lorem ipsum'  />
@@ -12,7 +10,7 @@ export default function Home(props : any) {
             <div className="border-b">
                 <div className="header p-3">
                     <div className="grid">
-                        ASDASD
+                      {Parse(props.pageContent)}
                     </div>
                 </div>
             </div>
@@ -23,9 +21,10 @@ export default function Home(props : any) {
 
 export async function getServerSideProps(context : any) {
   const { params } = context;
-  const slug = context.slug;
+  const slug = params.slug;
   console.log(slug);
   const res = await fetch(`http://localhost:3000/api/get_page_content`)
-  const data = await res.json()
-  return { props: data }
+  let data = await res.json()
+  data = data.filter((d: PageContent) => d.pageSlug === slug[0]);
+  return { props: data[0] }
 }

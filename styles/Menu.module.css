@@ -1,0 +1,26 @@
+.header {
+  @apply w-full;
+}
+
+.headerinner {
+  @apply flex bg-pizza-700 text-white;
+}
+
+.headernav {
+  @apply w-full px-0 py-2 m-auto container grid grid-cols-1 md:grid-cols-12 text-sm;
+}
+
+.headerbannerinner {
+  @apply bg-white flex;
+}
+
+.headerbanner {
+  @apply m-auto container grid grid-cols-1 md:grid-cols-12 py-8;
+}
+
+.cartcard {
+}
+
+.cartcard div {
+  @apply p-4 text-pizza-500 rounded-xl text-center;
+}

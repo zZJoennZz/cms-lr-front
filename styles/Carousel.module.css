@@ -1,0 +1,46 @@
+.carousel {
+  @apply relative shadow h-96;
+}
+
+.carouselInner {
+  @apply relative overflow-hidden w-full;
+}
+
+.carouselOpen:checked + .carouselItem {
+  position: static;
+  opacity: 100;
+}
+
+.carouselItem {
+  @apply absolute opacity-0 transition-all delay-300 ease-in-out bg-cover;
+}
+
+.carouselItem img {
+  @apply block h-96 w-full object-cover;
+}
+
+.carouselBullet {
+  @apply text-white cursor-pointer block text-2xl;
+}
+
+.carouselBullet:hover {
+  color: #fff;
+}
+
+#carousel-1:checked
+  ~ .control-1
+  ~ .carousel-indicators
+  li:nth-child(1)
+  .carouselBullet,
+#carousel-2:checked
+  ~ .control-2
+  ~ .carousel-indicators
+  li:nth-child(2)
+  .carouselBullet,
+#carousel-3:checked
+  ~ .control-3
+  ~ .carousel-indicators
+  li:nth-child(3)
+  .carouselBullet {
+  color: #428bca;
+}
