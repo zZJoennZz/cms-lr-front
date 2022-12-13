@@ -1,5 +1,5 @@
 .header {
-  @apply w-full;
+  @apply w-full border-b;
 }
 
 .headerinner {
@@ -7,7 +7,7 @@
 }
 
 .headernav {
-  @apply w-full px-0 py-2 m-auto container grid grid-cols-1 md:grid-cols-12 text-sm;
+  @apply w-full px-0 py-2 m-auto container grid grid-cols-2 md:grid-cols-12 text-sm;
 }
 
 .headerbannerinner {
@@ -15,7 +15,7 @@
 }
 
 .headerbanner {
-  @apply m-auto container grid grid-cols-1 md:grid-cols-12 py-8;
+  @apply m-auto container grid grid-cols-5 md:grid-cols-12 py-8;
 }
 
 .cartcard {

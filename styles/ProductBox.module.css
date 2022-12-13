@@ -1,0 +1,11 @@
+.specialOfferIcons {
+  @apply h-10 w-10 hover:bg-pizza-700 hover:text-white hover:border-pizza-600 transition-all ease-in-out flex items-center justify-center rounded border border-slate-300 mr-2 text-slate-500;
+}
+
+.cardInner {
+  @apply rounded-xl bg-slate-200 p-4 overflow-hidden mb-2;
+}
+
+.cardImg {
+  @apply w-8/12 m-auto mb-3 rounded-lg hover:scale-110 transition-all ease-in-out;
+}
