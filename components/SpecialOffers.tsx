@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-import styles from '../styles/SpecialOffers.module.css';
+import React, { useState } from 'react'
+import Image from 'next/image'
+import styles from '../styles/SpecialOffers.module.css'
 import 'keen-slider/keen-slider.min.css'
-import { useKeenSlider } from 'keen-slider/react';
+import { useKeenSlider } from 'keen-slider/react'
 import cacaolatte from '../images/cacaolatte.jpg'
+
+import ProductBox from './ProductBox'
 
 type sliderContent = {
     content: JSX.Element,
@@ -37,9 +39,13 @@ export default function SpecialOffers() {
     {
         loop: true,
         mode: "free-snap",
-        slides: {
-            perView: 5,
-            spacing: 15,
+        breakpoints: {
+            "(min-width: 400px)": {
+                slides: { perView: 2, spacing: 2 },
+            },
+            "(min-width: 1000px)": {
+                slides: { perView: 4, spacing: 5 },
+            },
         },
         created() {
             setLoaded(true)
@@ -51,601 +57,79 @@ export default function SpecialOffers() {
     const sliderContents: sliderContent[] = [
         {
             content: 
-                <div className="group cursor-pointer">
-                    <div className={styles.cardInner}>
-                        <Image src={cacaolatte} alt="cacaolatte" className={styles.cardImg} />
-                        <div className="grid grid-cols-4 text-center bg-white border border-slate-300 p-2 rounded-xl group-hover:scale-0 transition-all ease-in-out">
-                            <div>
-                                <div>12</div>
-                                <div className="text-sm text-slate-600">Days</div>
-                            </div>
-                            <div>
-                                <div>06</div>
-                                <div className="text-sm text-slate-600">Hours</div>
-                            </div>
-                            <div>
-                                <div>31</div>
-                                <div className="text-sm text-slate-600">Min</div>
-                            </div>
-                            <div>
-                                <div>21</div>
-                                <div className="text-sm text-slate-600">Sec</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-4 -mt-12 scale-0 text-center p-2 group-hover:scale-100 transition-all ease-in-out">
-                            <div>
-                                <span className="material-symbols-outlined fill-pizza-600">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="font-semibold text-slate-600 text-center mb-1">Test Product</div>
-                    <div className="text-center group-hover:scale-0 transition-all ease-in-out">$38.00 <s>$50.00</s></div>
-                    <div className="flex flex-row justify-center transition-all ease-in-out scale-0 group-hover:scale-100 -mt-4">
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                visibility
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                favorite
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                bar_chart
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <ProductBox 
+                    productName="Cacao Latte"
+                    id={1}
+                    slug={`product/` + "test"}
+                    image={cacaolatte}
+                    price={1000.00}
+                    salePrice={999.99}
+                    countdown="10:10:10:10"
+                    rating={(4 + 5 + 2 + 5 + 4 + 5) / 6}
+                />
             ,
         },
         {
             content: 
-                <div className="group cursor-pointer">
-                    <div className={styles.cardInner}>
-                        <Image src={cacaolatte} alt="cacaolatte" className={styles.cardImg} />
-                        <div className="grid grid-cols-4 text-center bg-white border border-slate-300 p-2 rounded-xl group-hover:scale-0 transition-all ease-in-out">
-                            <div>
-                                <div>12</div>
-                                <div className="text-sm text-slate-600">Days</div>
-                            </div>
-                            <div>
-                                <div>06</div>
-                                <div className="text-sm text-slate-600">Hours</div>
-                            </div>
-                            <div>
-                                <div>31</div>
-                                <div className="text-sm text-slate-600">Min</div>
-                            </div>
-                            <div>
-                                <div>21</div>
-                                <div className="text-sm text-slate-600">Sec</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-4 -mt-12 scale-0 text-center p-2 group-hover:scale-100 transition-all ease-in-out">
-                            <div>
-                                <span className="material-symbols-outlined fill-pizza-600">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="font-semibold text-slate-600 text-center mb-1">Test Product</div>
-                    <div className="text-center group-hover:scale-0 transition-all ease-in-out">$38.00 <s>$50.00</s></div>
-                    <div className="flex flex-row justify-center transition-all ease-in-out scale-0 group-hover:scale-100 -mt-4">
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                visibility
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                favorite
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                bar_chart
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <ProductBox 
+                    productName="Cacao Latte"
+                    id={1}
+                    slug={`product/` + "test"}
+                    image={cacaolatte}
+                    price={1000.00}
+                    salePrice={999.99}
+                    countdown="10:10:10:10"
+                    rating={(4 + 5 + 2 + 5 + 4 + 5) / 6}
+                />
             ,
         },
         {
             content: 
-                <div className="group cursor-pointer">
-                    <div className={styles.cardInner}>
-                        <Image src={cacaolatte} alt="cacaolatte" className={styles.cardImg} />
-                        <div className="grid grid-cols-4 text-center bg-white border border-slate-300 p-2 rounded-xl group-hover:scale-0 transition-all ease-in-out">
-                            <div>
-                                <div>12</div>
-                                <div className="text-sm text-slate-600">Days</div>
-                            </div>
-                            <div>
-                                <div>06</div>
-                                <div className="text-sm text-slate-600">Hours</div>
-                            </div>
-                            <div>
-                                <div>31</div>
-                                <div className="text-sm text-slate-600">Min</div>
-                            </div>
-                            <div>
-                                <div>21</div>
-                                <div className="text-sm text-slate-600">Sec</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-4 -mt-12 scale-0 text-center p-2 group-hover:scale-100 transition-all ease-in-out">
-                            <div>
-                                <span className="material-symbols-outlined fill-pizza-600">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="font-semibold text-slate-600 text-center mb-1">Test Product</div>
-                    <div className="text-center group-hover:scale-0 transition-all ease-in-out">$38.00 <s>$50.00</s></div>
-                    <div className="flex flex-row justify-center transition-all ease-in-out scale-0 group-hover:scale-100 -mt-4">
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                visibility
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                favorite
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                bar_chart
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <ProductBox 
+                    productName="Cacao Latte"
+                    id={1}
+                    slug={`product/` + "test"}
+                    image={cacaolatte}
+                    price={1000.00}
+                    salePrice={999.99}
+                    countdown="10:10:10:10"
+                    rating={(4 + 5 + 2 + 5 + 4 + 5) / 6}
+                />
             ,
         },
         {
             content: 
-                <div className="group cursor-pointer">
-                    <div className={styles.cardInner}>
-                        <Image src={cacaolatte} alt="cacaolatte" className={styles.cardImg} />
-                        <div className="grid grid-cols-4 text-center bg-white border border-slate-300 p-2 rounded-xl group-hover:scale-0 transition-all ease-in-out">
-                            <div>
-                                <div>12</div>
-                                <div className="text-sm text-slate-600">Days</div>
-                            </div>
-                            <div>
-                                <div>06</div>
-                                <div className="text-sm text-slate-600">Hours</div>
-                            </div>
-                            <div>
-                                <div>31</div>
-                                <div className="text-sm text-slate-600">Min</div>
-                            </div>
-                            <div>
-                                <div>21</div>
-                                <div className="text-sm text-slate-600">Sec</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-4 -mt-12 scale-0 text-center p-2 group-hover:scale-100 transition-all ease-in-out">
-                            <div>
-                                <span className="material-symbols-outlined fill-pizza-600">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="font-semibold text-slate-600 text-center mb-1">Test Product</div>
-                    <div className="text-center group-hover:scale-0 transition-all ease-in-out">$38.00 <s>$50.00</s></div>
-                    <div className="flex flex-row justify-center transition-all ease-in-out scale-0 group-hover:scale-100 -mt-4">
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                visibility
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                favorite
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                bar_chart
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <ProductBox 
+                    productName="Cacao Latte"
+                    id={1}
+                    slug={`product/` + "test"}
+                    image={cacaolatte}
+                    price={1000.00}
+                    salePrice={999.99}
+                    countdown="10:10:10:10"
+                    rating={(4 + 5 + 2 + 5 + 4 + 5) / 6}
+                />
             ,
         },
         {
             content: 
-                <div className="group cursor-pointer">
-                    <div className={styles.cardInner}>
-                        <Image src={cacaolatte} alt="cacaolatte" className={styles.cardImg} />
-                        <div className="grid grid-cols-4 text-center bg-white border border-slate-300 p-2 rounded-xl group-hover:scale-0 transition-all ease-in-out">
-                            <div>
-                                <div>12</div>
-                                <div className="text-sm text-slate-600">Days</div>
-                            </div>
-                            <div>
-                                <div>06</div>
-                                <div className="text-sm text-slate-600">Hours</div>
-                            </div>
-                            <div>
-                                <div>31</div>
-                                <div className="text-sm text-slate-600">Min</div>
-                            </div>
-                            <div>
-                                <div>21</div>
-                                <div className="text-sm text-slate-600">Sec</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-4 -mt-12 scale-0 text-center p-2 group-hover:scale-100 transition-all ease-in-out">
-                            <div>
-                                <span className="material-symbols-outlined fill-pizza-600">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="font-semibold text-slate-600 text-center mb-1">Test Product</div>
-                    <div className="text-center group-hover:scale-0 transition-all ease-in-out">$38.00 <s>$50.00</s></div>
-                    <div className="flex flex-row justify-center transition-all ease-in-out scale-0 group-hover:scale-100 -mt-4">
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                visibility
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                favorite
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                bar_chart
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            ,
-        },
-        {
-            content: 
-                <div className="group cursor-pointer">
-                    <div className={styles.cardInner}>
-                        <Image src={cacaolatte} alt="cacaolatte" className={styles.cardImg} />
-                        <div className="grid grid-cols-4 text-center bg-white border border-slate-300 p-2 rounded-xl group-hover:scale-0 transition-all ease-in-out">
-                            <div>
-                                <div>12</div>
-                                <div className="text-sm text-slate-600">Days</div>
-                            </div>
-                            <div>
-                                <div>06</div>
-                                <div className="text-sm text-slate-600">Hours</div>
-                            </div>
-                            <div>
-                                <div>31</div>
-                                <div className="text-sm text-slate-600">Min</div>
-                            </div>
-                            <div>
-                                <div>21</div>
-                                <div className="text-sm text-slate-600">Sec</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-4 -mt-12 scale-0 text-center p-2 group-hover:scale-100 transition-all ease-in-out">
-                            <div>
-                                <span className="material-symbols-outlined fill-pizza-600">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="font-semibold text-slate-600 text-center mb-1">Test Product</div>
-                    <div className="text-center group-hover:scale-0 transition-all ease-in-out">$38.00 <s>$50.00</s></div>
-                    <div className="flex flex-row justify-center transition-all ease-in-out scale-0 group-hover:scale-100 -mt-4">
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                visibility
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                favorite
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                bar_chart
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            ,
-        },
-        {
-            content: 
-                <div className="group cursor-pointer">
-                    <div className={styles.cardInner}>
-                        <Image src={cacaolatte} alt="cacaolatte" className={styles.cardImg} />
-                        <div className="grid grid-cols-4 text-center bg-white border border-slate-300 p-2 rounded-xl group-hover:scale-0 transition-all ease-in-out">
-                            <div>
-                                <div>12</div>
-                                <div className="text-sm text-slate-600">Days</div>
-                            </div>
-                            <div>
-                                <div>06</div>
-                                <div className="text-sm text-slate-600">Hours</div>
-                            </div>
-                            <div>
-                                <div>31</div>
-                                <div className="text-sm text-slate-600">Min</div>
-                            </div>
-                            <div>
-                                <div>21</div>
-                                <div className="text-sm text-slate-600">Sec</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-4 -mt-12 scale-0 text-center p-2 group-hover:scale-100 transition-all ease-in-out">
-                            <div>
-                                <span className="material-symbols-outlined fill-pizza-600">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="font-semibold text-slate-600 text-center mb-1">Test Product</div>
-                    <div className="text-center group-hover:scale-0 transition-all ease-in-out">$38.00 <s>$50.00</s></div>
-                    <div className="flex flex-row justify-center transition-all ease-in-out scale-0 group-hover:scale-100 -mt-4">
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                visibility
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                favorite
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                bar_chart
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            ,
-        },
-        {
-            content: 
-                <div className="group cursor-pointer">
-                    <div className={styles.cardInner}>
-                        <Image src={cacaolatte} alt="cacaolatte" className={styles.cardImg} />
-                        <div className="grid grid-cols-4 text-center bg-white border border-slate-300 p-2 rounded-xl group-hover:scale-0 transition-all ease-in-out">
-                            <div>
-                                <div>12</div>
-                                <div className="text-sm text-slate-600">Days</div>
-                            </div>
-                            <div>
-                                <div>06</div>
-                                <div className="text-sm text-slate-600">Hours</div>
-                            </div>
-                            <div>
-                                <div>31</div>
-                                <div className="text-sm text-slate-600">Min</div>
-                            </div>
-                            <div>
-                                <div>21</div>
-                                <div className="text-sm text-slate-600">Sec</div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-4 -mt-12 scale-0 text-center p-2 group-hover:scale-100 transition-all ease-in-out">
-                            <div>
-                                <span className="material-symbols-outlined fill-pizza-600">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                            <div>
-                                <span className="material-symbols-outlined">
-                                    star
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="font-semibold text-slate-600 text-center mb-1">Test Product</div>
-                    <div className="text-center group-hover:scale-0 transition-all ease-in-out">$38.00 <s>$50.00</s></div>
-                    <div className="flex flex-row justify-center transition-all ease-in-out scale-0 group-hover:scale-100 -mt-4">
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                visibility
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                favorite
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                bar_chart
-                            </span>
-                        </div>
-                        <div className={styles.specialOfferIcons}>
-                            <span className="material-symbols-outlined text-base">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <ProductBox 
+                    productName="Cacao Latte"
+                    id={1}
+                    slug={`product/` + "test"}
+                    image={cacaolatte}
+                    price={1000.00}
+                    salePrice={999.99}
+                    countdown="10:10:10:10"
+                    rating={(4 + 5 + 2 + 5 + 4 + 5) / 6}
+                />
             ,
         },
     ]
     return (
-        <div className="w-12/12 md:w-10/12 m-auto">
+        <div className="w-12/12 md:w-10/12 m-auto pt-28 px-1 md:px-0">
             <div className="w-full flex flex-col">
-                <div className="text-4xl font-bold text-center mb-5">Special Offers</div>
+                <div className="text-2xl md:text-4xl font-bold text-center mb-5">Special Offers</div>
                 <div className="m-auto w-20 h-1 bg-pizza-600 mb-10"></div>
 
                 <div ref={sliderRef} className="keen-slider m-auto">
