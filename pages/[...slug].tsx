@@ -4,18 +4,18 @@ import Parse from 'html-react-parser';
 
 export default function Home(props : PageContent1) {
   return (
-      <>
-        <Meta pageTitle='Joenn' metaDescription='Lorem ipsum'  />
-        <div className="body-container bg-white">
-            <div className="border-b">
-                <div className="header p-3">
-                    <div className="grid">
-                      {Parse(props.pageContent)}
-                    </div>
-                </div>
+    <>
+      <Meta pageTitle='Joenn' metaDescription='Lorem ipsum'  />
+      <div className="body-container bg-white">
+        <div className="border-b">
+          <div className="header p-3">
+            <div className="grid">
+              
             </div>
+          </div>
         </div>
-      </>
+      </div>
+    </>
   )
 }
 
