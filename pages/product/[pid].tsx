@@ -2,10 +2,14 @@ import Menu from "../../components/Menu"
 import Footer from "../../components/Footer"
 import Meta from "../../components/Meta"
 import ProductSidebar from "../../components/ProductSidebar"
+import axios from 'axios'
+import Link from "next/link"
 
-import lemonSoda from '../../images/lemonsoda.jpg'
 import { useKeenSlider } from "keen-slider/react"
 import 'keen-slider/keen-slider.min.css'
+import { GetServerSidePropsContext } from "next"
+
+const API_URL = "http://localhost:8000/"
 
 function ThumbnailPlugin(mainRef : any) {
     return (slider : any) => {
@@ -41,11 +45,24 @@ function ThumbnailPlugin(mainRef : any) {
     }
 }
 
-export default function ProductPage(): JSX.Element {
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+    let res = await axios.get(`${API_URL}dbwebapi/products/shop/getproducts/?slug=${ctx.query.pid}`);
+    
+    return {
+        props: {
+            data: res.data
+        }
+    }
+}
+
+export default function ProductPage(props : any): JSX.Element {
     const [sliderRef, instanceRef] = useKeenSlider({
         initial: 0,
     })
 
+    const productData = props.data[0]
+    // console.table(productData)
+    
     const [thumbnailRef] = useKeenSlider(
         {
             initial: 0,
@@ -59,13 +76,14 @@ export default function ProductPage(): JSX.Element {
     return (
         <>
             <Meta 
-                pageTitle="White Chocolate Custard Cake | Le REUSSI"
-                metaDescription="Test metadescription"
+                pageTitle={`${productData.product_name} | Le REUSSI`}
+                metaDescription={productData.enabled_variant.meta.meta_tag_description}
                 otherMetaData=""
                 metaKeywords="products"
                 metaRobots=""
             />
             <Menu />
+            {/* <button onClick={() => console.log(JSON.parse(localStorage.getItem('cart')))}>TEST</button> */}
             <div className="w-12/12 md:w-11/12 lg:w-10/12 m-auto py-10">
                 
                 <div className="grid grid-cols-1 md:grid-cols-12 space-x-0 md:space-x-2">
@@ -74,29 +92,33 @@ export default function ProductPage(): JSX.Element {
                     </div>
                     <div className="col-span-9 order-1 md:order-2">
                         <div className="bg-gray-100 w-full font-light p-3 border border-gray-100 uppercase mb-3">
-                            White Chocolate Custard Cake
+                            <Link href="/product" className="text-pizza-600 hover:text-gray-500 transition-all ease-in-out">All Products</Link> / <span className="font-bold">{productData.product_name}</span>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 md:space-x-3">
                             <div>
                                 <div ref={sliderRef} className="keen-slider">
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
+                                    {
+                                        productData.enabled_variant.media.length > 0 ?
+                                            productData.enabled_variant.media.map((product:any) => 
+                                                <div key={product.id} className="keen-slider__slide h-96 bg-cover bg-center" style={{ backgroundImage: `url('${product.attachment}')` }}></div>
+                                            )
+                                        :
+                                            <div className="keen-slider__slide h-96 flex items-center justify-center">
+                                                No images available
+                                            </div>
+                                    }
                                 </div>
                                 <div ref={thumbnailRef} className="keen-slider thumbnail">
-                                <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
-                                    <div className="keen-slider__slide h-96 bg-cover" style={{ backgroundImage: `url('${lemonSoda.src}')` }}></div>
+                                    {
+                                        productData.enabled_variant.media.map((product:any) => 
+                                            <div key={product.id} className="keen-slider__slide h-96 bg-cover bg-center" style={{ backgroundImage: `url('${product.attachment}')` }}></div>
+                                        )
+                                    }
                                 </div>
                             </div>
                             <div>
-                                <div className="text-3xl border-b pb-3 text-slate-600 mb-3">White Chocolate Custard Cake</div>
+                                <div className="text-3xl border-b pb-3 text-slate-600 mb-3">{productData.product_name}</div>
+                                <div className="text-sm text-gray-500">SKU: {productData.enabled_variant.sku}</div>
                                 <div className="flex items-center my-5">
                                     <div className="inline mr-3 text-yellow-500">
                                         <span className="material-symbols-outlined">
@@ -118,10 +140,10 @@ export default function ProductPage(): JSX.Element {
                                     <div className="inline text-gray-500">5 reviews / <span className="material-symbols-outlined text-base">edit</span> <span className="text-sm">Write a review</span></div>
                                 </div>
                                 <div className="text-2xl my-5">
-                                    PHP 20,000.00
+                                    {productData.enabled_variant.price}
                                 </div>
                                 <div className="my-5 border-t border-b p-2">
-                                    <div className="inline mr-5">Quantity:</div> <input type="number" min={0} defaultValue={0} className="w-14 outline-none p-2 border mr-5" /> <button className="py-2 px-4 bg-yellow-600 text-white rounded-3xl hover:bg-yellow-500 transition-all ease-in-out">Add to cart</button>
+                                    <div className="inline mr-5">Quantity:</div> <input type="number" min={0} defaultValue={0} className="w-14 outline-none p-2 border mr-5" /> <button onClick={() => props.addToCart()} className="py-2 px-4 bg-yellow-600 text-white rounded-3xl hover:bg-yellow-500 transition-all ease-in-out">Add to cart</button>
                                 </div>
                             </div>
                             <div className="my-5">
@@ -135,7 +157,7 @@ export default function ProductPage(): JSX.Element {
                                             close
                                         </div>
                                         <div className="scale-y-0 h-0 group-hover:scale-y-100 group-hover:h-auto transition-all ease-in-out group-hover:mt-3 origin-top duration-300">
-                                            Samsung Galaxy Tab 10.1, is the world's thinnest tablet, measuring 8.6 mm thickness, running with Android 3.0 Honeycomb OS on a 1GHz dual-core Tegra 2 processor, similar to its younger brother Samsung Galaxy Tab 8.9.
+                                            {productData.product_description}
                                         </div>
                                     </div>
                                 </div>
