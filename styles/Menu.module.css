@@ -19,8 +19,9 @@
 }
 
 .cartcard {
+  @apply relative;
 }
 
 .cartcard div {
-  @apply p-4 text-pizza-500 rounded-xl text-center;
+  @apply p-2 rounded-xl text-center;
 }

@@ -5,9 +5,8 @@ import FeaturedProducts from '../components/FeaturedProducts'
 import SpecialOffers from '../components/SpecialOffers'
 import BrowseByCategory from '../components/BrowseByCategory'
 import Footer from '../components/Footer'
-import type { PageContent } from '../types/appTypes'
 
-export default function Home(props : PageContent) {
+export default function Home(props : any) {
     return (
         <>
             <Meta 
@@ -18,7 +17,7 @@ export default function Home(props : PageContent) {
                 metaRobots={props.metaRobots}
             />
 
-            <Menu />
+            <Menu logout={() => props.logout()} />
 
             <CarouselSlider />
 
@@ -107,7 +106,7 @@ export default function Home(props : PageContent) {
 }
 
 export async function getServerSideProps() {
-    const data: PageContent = {
+    const data = {
         id: 0,
         internalName: "Homepage",
         pageTitle: "Le REUSSI",

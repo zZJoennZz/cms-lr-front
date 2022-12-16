@@ -4,7 +4,20 @@ import Link from 'next/link'
 import styles from '../styles/Menu.module.css'
 import logo from '../images/lereussi-logo.png'
 
-export default function Menu() {
+import cacaoLatte from '../images/cacaolatte.jpg'
+
+import { useUser } from '../utils/user'
+
+export default function Menu({logout} : any) {
+    let isAuth: boolean
+    const user: any = useUser()
+
+    if (user !== null){
+        isAuth = true;
+    } else {
+        isAuth = false;
+    }
+
     const [showNav, setShowNav] = useState(false);
     const [showCart, setShortCart] = useState(false);
 
@@ -67,9 +80,29 @@ export default function Menu() {
                 <div className="float-right p-5 text-white">Cart</div>
                 <div className="h-full mt-16 p-5">
                     <div className={styles.cartcard}>
-                        <div>
-                            <span>Your shopping cart is empty!</span>
+                        {/* <div>
+                            <span className="text-pizza-500">Your shopping cart is empty!</span>
+                        </div> */}
+                        <div className="bg-white text-gray-500 flex relative">
+                            <div className="material-symbols-outlined absolute top-0 right-0 text-red-600 cursor-pointer">
+                                cancel
+                            </div>
+                            <div>
+                                <Image src={cacaoLatte} alt="Cacao Latte" className="w-24 h-24 object-cover rounded-xl" />
+                            </div>
+                            <div className="text-lg flex flex-col items-start">
+                                <div className="font-bold">Cacao Latte</div>
+                                <div className="text-sm"><span className="font-bold">Qty:</span> 20</div>
+                            </div>
                         </div>
+                    </div>
+                    <div className="w-full mt-3">
+                        <Link href="/checkout" className="text-white bg-gumbo border border-gumbo rounded-lg w-full py-2 hover:border-white hover:bg-transparent transition-all ease-in-out flex items-center justify-center">
+                            <span className="material-symbols-outlined">
+                                shopping_cart_checkout
+                            </span>
+                            Checkout
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -81,12 +114,21 @@ export default function Menu() {
                                 mail
                             </span> : info@test.com
                         </div>
-                        <div className="text-right flex justify-end cursor-pointer items-center col-span-1 md:col-span-2" onClick={() => togNav()}>
-                            {/* Account
-                            <span className="material-symbols-outlined">
-                                expand_more
-                            </span> */}
-                            <div className="mr-2"><Link href="/" className="hover:text-pizza-400 transition-all ease-in-out">Login</Link> | <Link href="/" className="hover:text-pizza-400 transition-all ease-in-out">Register</Link></div>
+                        <div className="text-right flex justify-end cursor-pointer items-center col-span-1 md:col-span-2">
+                            {
+                                isAuth ?
+                                    <div className="group relative flex items-center">
+                                        Account
+                                        <span className="material-symbols-outlined">
+                                            expand_more
+                                        </span> 
+                                        <div className="bg-white text-gray-600 w-full text-center scale-0 origin-top group-hover:scale-100 absolute -bottom-7 shadow rounded py-1" onClick={() => logout()}>
+                                            Logout
+                                        </div>
+                                    </div>
+                                :
+                                    <div className="mr-2"><Link href="/" className="hover:text-pizza-400 transition-all ease-in-out">Login</Link> | <Link href="/" className="hover:text-pizza-400 transition-all ease-in-out">Register</Link></div>
+                            }
                         </div>
                     </div>
                 </div>

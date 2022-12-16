@@ -70,6 +70,50 @@ interface Category {
   categoryName: string;
 }
 
+interface Address {
+  address1: string;
+  address2: string;
+  city: string;
+  zip: string;
+  province: string;
+  country: string;
+  address_type: string;
+}
+
+interface OrderDetail {
+  product_variant: number;
+  quantity: number;
+  amount: number;
+  discount: number;
+  total_amount: number;
+}
+
+interface CustomerInfo {
+  name: string;
+  email_address: string;
+  contact_number: string;
+  address: Address[];
+}
+
+interface OrderFee {
+  fee_type: string;
+  amount: number;
+}
+
+interface CheckoutPayload {
+  total_amount: number;
+  total_discount: number;
+  total_fees: number;
+  order_amount: number;
+  details: OrderDetail[];
+  fees: OrderFee[];
+  customer: CustomerInfo;
+  account: string;
+  payment_method: string;
+  order_type: string;
+  attachments: any;
+}
+
 export type {
   PageList,
   Pages,
@@ -79,4 +123,7 @@ export type {
   PageComponent,
   ProductDetail,
   Category,
+  CheckoutPayload,
+  OrderDetail,
+  OrderFee,
 };
