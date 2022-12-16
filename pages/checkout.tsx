@@ -69,7 +69,7 @@ export default function Checkout(props : any) {
             password: '',
         },
         validationSchema: LoginSchema,
-        onSubmit: values => {
+        onSubmit: (values: {username:string, password:string}) => {
             props.login(values)
         }
     })
@@ -151,10 +151,10 @@ export default function Checkout(props : any) {
         <>
             <Meta 
                 pageTitle="Checkout Order | Le REUSSI"
-                metaDescription="Test"
-                otherMetaData="Test"
-                metaKeywords="Test"
-                metaRobots="Test"
+                metaDescription=""
+                otherMetaData=""
+                metaKeywords=""
+                metaRobots=""
             />
             <Menu logout={() => props.logout()} />
             <div className="w-12/12 md:w-10/12 m-auto py-10">
@@ -218,15 +218,26 @@ export default function Checkout(props : any) {
                                                 </div>
                                                 <div className='p-2 relative'>
                                                     <p className="text-xl">Returning Customer</p>
+                                                    {
+                                                        props.loginErr !== '' ? 
+                                                            <div className="bg-red-100 mt-3 p-2 rounded-lg border border-red-300 text-red-400 text-sm relative">
+                                                                <div className="absolute right-2 cursor-pointer bg-white rounded-full w-5 h-5 flex items-center justify-center" onClick={() => props.dismissLoginErr()}>
+                                                                    x
+                                                                </div>
+                                                                {props.loginErr}
+                                                            </div> 
+                                                        : 
+                                                            null
+                                                    }
                                                     <form onSubmit={formik.handleSubmit}>
                                                         <div className="group relative">   
                                                             <label htmlFor="email_address" className="block mt-3 mb-2 text-sm text-gray-600">Email Address</label>
-                                                            <input type="text" name="username" id="username" className="border p-3 rounded-xl placeholder-gray-500 outline-none focus:outline focus:outline-gumbo transition-all ease-in-out w-full" placeholder="Enter your username" required value={formik.values.username} onChange={formik.handleChange} />
+                                                            <input type="text" name="username" id="username" className="border p-3 rounded-xl placeholder-gray-500 outline-none focus:outline focus:outline-gumbo transition-all ease-in-out w-full" placeholder="Enter your username" required value={formik.values.username} onChange={formik.handleChange} autoComplete="username" />
                                                             {formik.errors.username && formik.touched.username ? <div className="mt-2 text-xs text-gray-400">{formik.errors.username}</div> : null}
                                                         </div>
                                                         <div className="group relative">   
                                                             <label htmlFor="email_address" className="block mt-3 mb-2 text-sm text-gray-600">Password</label>
-                                                            <input type="password" name="password" id="password" className="border p-3 rounded-xl placeholder-gray-500 outline-none focus:outline focus:outline-gumbo transition-all ease-in-out w-full" placeholder="Enter your password" required value={formik.values.password} onChange={formik.handleChange} />
+                                                            <input type="password" name="password" id="password" className="border p-3 rounded-xl placeholder-gray-500 outline-none focus:outline focus:outline-gumbo transition-all ease-in-out w-full" placeholder="Enter your password" required value={formik.values.password} onChange={formik.handleChange} autoComplete="current-password" />
                                                             {formik.errors.password && formik.touched.password ? <div className="mt-2 text-xs text-gray-400">{formik.errors.password}</div> : null}
                                                         </div>
                                                         <div className="group relative mt-4">
@@ -580,7 +591,7 @@ export default function Checkout(props : any) {
                                                             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                                                     </label>
                                                 </div>
-                                                <button className="text-white bg-pizza-600 w-full text-sm py-2 hover:bg-pizza-500 transition-all ease-in-out rounded flex items-center justify-center" onClick={() => props.login()}>
+                                                <button className="text-white bg-pizza-600 w-full text-sm py-2 hover:bg-pizza-500 transition-all ease-in-out rounded flex items-center justify-center" onClick={() => alert('SUCCESS')}>
                                                     <div className="material-symbols-outlined mr-2">
                                                         fingerprint
                                                     </div>
