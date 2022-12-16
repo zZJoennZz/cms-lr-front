@@ -71,7 +71,7 @@ export default function Menu({logout} : any) {
                 </div>
             </nav>
 
-            <div className={`cart ${showCart ? 'cart-open' : 'cart-close'} w-2/3 md:w-1/5 fixed right-0 overflow-x-auto bg-pizza-800 top-0 h-screen`}>
+            <div className={`cart ${showCart ? 'cart-open' : 'cart-close'} w-2/3 md:w-2/5 fixed right-0 overflow-x-auto bg-pizza-800 top-0 h-screen`}>
                 <button onClick={() => togCart()} className="absolute top-5 left-5 text-white text-xl font-bold">
                     <span className="material-symbols-outlined">
                         close
