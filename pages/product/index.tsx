@@ -12,7 +12,7 @@ const API_URL = "http://localhost:8000/"
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     let res = await axios.get(`${API_URL}dbwebapi/products/shop/getproductvariants`);
-    
+
     return {
         props: {
             data: res.data
@@ -66,18 +66,25 @@ export default function Product(props : any) {
                             {
                                 props.data && props.data.map((product: any, key: number) => {
                                     return (  
-                                        <Link href={`/product/${product.meta[0].page_slug}`}>
-                                            <div key={key} className="cursor-pointer group relative">
-                                                <div className="p-3 mb-3 bg-slate-100 rounded-lg h-48 w-full flex">
+                                        <Link key={key}  href={`/product/${product.meta.page_slug}`}>
+                                            <div className="cursor-pointer group relative border border-white hover:bg-slate-100 transition-all ease-in-out p-1 rounded-lg hover:border-slate-200">
+                                                <div className="p-3 mb-2 bg-slate-100 rounded-lg h-48 w-full flex">
                                                     <Image 
-                                                        className="object-cover m-auto" 
-                                                        src={`${product.media.file_attachment ? product.media.file_attachment : placeholderImg.src}`} 
-                                                        width={100}
-                                                        height={100}
+                                                        className="object-cover m-auto w-full h-full rounded-lg group-hover:scale-105 transition-all ease-in-out" 
+                                                        src={`${product.media[0].attachment ? product.media[0].attachment : placeholderImg.src}`} 
+                                                        width={350}
+                                                        height={350}
                                                         alt={product.product_name}
                                                     />
                                                 </div>
-                                                <div className="text-center font-bold w-full">{product.product_name}</div>
+                                                <div className="w-full text-center text-gray-500 mb-3">
+                                                    <span className="material-symbols-outlined">star</span>
+                                                    <span className="material-symbols-outlined">star</span>
+                                                    <span className="material-symbols-outlined">star</span>
+                                                    <span className="material-symbols-outlined">star</span>
+                                                    <span className="material-symbols-outlined">star</span>
+                                                </div>
+                                                <div className="text-center font-bold w-full group-hover:text-pizza-600 transition-all ease-in-out">{product.product_name}</div>
                                                 <div className="w-full text-center">{product.discount ? <><span className="font-bold">₱ {product.discount}</span> <s className="text-gray-400">₱ {product.price}</s></> : <>₱ {product.price}</>}</div>
                                             </div>
                                         </Link>  
