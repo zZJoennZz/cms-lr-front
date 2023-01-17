@@ -7,17 +7,22 @@ import BrowseByCategory from '../components/BrowseByCategory'
 import Footer from '../components/Footer'
 
 export default function Home(props : any) {
+
     return (
         <>
             <Meta 
-                pageTitle={props.pageTitle}
-                metaDescription={props.metaDescription}
-                otherMetaData={props.otherMetaData}
-                metaKeywords={props.metaKeywords}
-                metaRobots={props.metaRobots}
+                pageTitle={props.data[0].pageTitle}
+                metaDescription={props.data[0].metaDescription}
+                otherMetaData={props.data[0].otherMetaData}
+                metaKeywords={props.data[0].metaKeywords}
+                metaRobots={props.data[0].metaRobots}
             />
 
-            <Menu logout={() => props.logout()} />
+            <Menu 
+                logout={() => props.logout()} 
+                removeFromCart={(prodId: number) => props.removeFromCart(prodId)} 
+                adjustCart={(e:any, prodId: number) => props.adjustCart(e, prodId)}
+            />
 
             <CarouselSlider />
 
@@ -106,16 +111,24 @@ export default function Home(props : any) {
 }
 
 export async function getServerSideProps() {
-    const data = {
-        id: 0,
-        internalName: "Homepage",
-        pageTitle: "Le REUSSI",
-        pageSlug: "/",
-        pageContent: [],
-        isHome: true,
-        metaDescription: "We are baking happiness",
-        metaKeywords: "dessert, baking, pastry",
-        isPublished: true,
+    let data : any;
+    try  {
+        data = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}api/get_page_content`).then(res => res.json())
+    } catch (e) {
+        data = [
+            {
+                internalName: 'Home',
+                pageTitle: 'Le REUSSI',
+                pageContent: '',
+                isHome: 'True',
+                metaDescription: '',
+                metaRobots: '',
+                metaKeywords: '',
+                otherMetaData: '',
+                isPublished: 'True',
+                isDeleted: 'False'
+            }
+        ]
     }
-    return { props: data }
+    return { props: { data }  }
 }

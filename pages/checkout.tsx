@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Meta from '../components/Meta'
 import Menu from '../components/Menu'
@@ -9,10 +10,11 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import { useUser } from '../utils/user'
+import { useCart } from '../utils/cart'
 
-import lemonSoda from '../images/lemonsoda.jpg'
+import { wholeNumberOnly, currencyFormatter } from '../utils/functions'
 
-import type { CheckoutPayload } from '../types/appTypes'
+import type { CheckoutPayload, CartList } from '../types/appTypes'
 
 const LoginSchema : any = Yup.object().shape({
     username: Yup.string()
@@ -28,6 +30,7 @@ const LoginSchema : any = Yup.object().shape({
 export default function Checkout(props : any) {
     let isAuth: boolean;
     const user: any = useUser()
+    const cart: any = useCart()
     if (user !== null){
         isAuth = true;
     } else {
@@ -129,13 +132,21 @@ export default function Checkout(props : any) {
         ]
     }
 
-    function onChangeShipping(e: any) { setShippingForm((prev) => { return {...prev, [e.target.name] : e.target.value} }) }
+    function onChangeShipping(e: any) { setShippingForm((prev : any) => { return {...prev, [e.target.name] : e.target.value} }) }
 
     function sameAsShippingIsChecked(e: any) {
         if (e.target.checked) {
 
         }
     }
+
+    // async function test() {
+    //     await axios.get(`${process.env.NEXT_PUBLIC_API_URL}dbwebapi/accounts`, { refresh: localStorage.getItem("refresh") }, { headers: { Authorization: 'Bearer ' + localStorage.getItem("token") } })
+    //         .then(res => {
+    //             console.log(res)
+    //         })
+    //         .catch(err => console.error(err))
+    // }
     
     useEffect(() => {
         let isSub = true
@@ -156,7 +167,11 @@ export default function Checkout(props : any) {
                 metaKeywords=""
                 metaRobots=""
             />
-            <Menu logout={() => props.logout()} />
+            <Menu 
+                logout={() => props.logout()} 
+                removeFromCart={(prodId: number) => props.removeFromCart(prodId)} 
+                adjustCart={(e:any, prodId: number) => props.adjustCart(e, prodId)}
+            />
             <div className="w-12/12 md:w-10/12 m-auto py-10">
                 <div className="grid grid-cols-1 md:grid-cols-12 space-x-0 md:space-x-2">
                     <div className="col-span-3 order-2 md:order-1">
@@ -173,22 +188,50 @@ export default function Checkout(props : any) {
                                 <div className="text-sm text-black">Items in cart</div>
                             </div>
                             <div className="p-3">
-                                <div className="flex">
-                                    <Image src={lemonSoda} alt="Lemon soda" className="w-28 h-28 object-cover rounded-xl mr-3" />
-                                    <div className="flex-grow">
-                                        <span className="text-3xl font-bold ">Lemon Soda</span>
-                                        <span className="material-symbols-outlined cursor-pointer text-red-600 hover:text-red-400 transition-all ease-in-out">
-                                            remove
-                                        </span>
-                                        <div className="text-gray-500">Variant: Test</div>
+                                {
+                                    cart !== null && cart !== "" && cart !== undefined && cart.length > 0 ?
+                                        cart.map((item: CartList) => 
+                                            <div className="flex" key={item.id}>
+                                                <Image src={item.image_url} alt={item.product_name} width={100} height={100} className="w-28 h-28 object-cover rounded-xl mr-3" />
+                                                <div className="flex-grow">
+                                                    <div className="text-3xl font-bold inline relative">
+                                                        {item.product_name}
+                                                        <div 
+                                                            className="material-symbols-outlined cursor-pointer bg-red-600 hover:bg-red-400 text-white rounded-full text-xs w-4 h-4 text-center transition-all ease-in-out absolute top-1 -right-4"
+                                                            onClick={() => props.removeFromCart(item.id)}
+                                                        >
+                                                            remove
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-gray-600">
+                                                    <div className="mb-2">
+                                                        <span className="font-bold">Price:</span>  <div className="ml-2 float-right">{currencyFormatter(item.price)}</div>
+                                                    </div>
+                                                    <div className="mb-3">
+                                                        <span className="font-bold">Qty:</span> 
+                                                        <div className="float-right">
+                                                            <input 
+                                                                type="number" 
+                                                                className="ml-2 text-sm p-1 border w-14 rounded-lg" 
+                                                                min={1} 
+                                                                defaultValue={item.qty} 
+                                                                onInput={(e) => wholeNumberOnly(e)} 
+                                                                onChange={(e) => props.adjustCart(e, item.id)}
+                                                            /> 
+                                                        </div>
+                                                    </div>
+                                                    <div className="border-t">  
+                                                        <span className="font-bold">Total:</span> <div className="ml-2 float-right">{currencyFormatter(item.price * item.qty)}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    )
+                                    :
+                                    <div className="text-center">
+                                        <span className="text-gray-500 italic">Your shopping cart is empty!</span>
                                     </div>
-                                    <div className="text-lg px-2">
-                                        PHP 20.00
-                                    </div>
-                                    <div className="text-lg px-2">
-                                        <span className="font-bold">Qty:</span> <input type="number" className="text-sm p-1 border w-14 rounded-lg" min={1} defaultValue={20} />
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                         {
@@ -231,7 +274,7 @@ export default function Checkout(props : any) {
                                                     }
                                                     <form onSubmit={formik.handleSubmit}>
                                                         <div className="group relative">   
-                                                            <label htmlFor="email_address" className="block mt-3 mb-2 text-sm text-gray-600">Email Address</label>
+                                                            <label htmlFor="email_address" className="block mt-3 mb-2 text-sm text-gray-600">Username</label>
                                                             <input type="text" name="username" id="username" className="border p-3 rounded-xl placeholder-gray-500 outline-none focus:outline focus:outline-gumbo transition-all ease-in-out w-full" placeholder="Enter your username" required value={formik.values.username} onChange={formik.handleChange} autoComplete="username" />
                                                             {formik.errors.username && formik.touched.username ? <div className="mt-2 text-xs text-gray-400">{formik.errors.username}</div> : null}
                                                         </div>
@@ -569,35 +612,44 @@ export default function Checkout(props : any) {
                                             <div className="border-b p-4 text-sm">
                                                 Order Summary
                                             </div>
-                                            <div className="p-3">
-                                                <div className="flex items-center">
-                                                    <div className="flex-grow text-gray-500 text-xs">Subtotal (20 items)</div>
-                                                    <div><span className="text-xs">PHP</span> 400.00</div>
-                                                </div>
-                                                <div className="flex items-center">
-                                                    <div className="flex-grow text-gray-500 text-xs">Delivery Fee</div>
-                                                    <div><span className="text-xs">PHP</span> 50.00</div>
-                                                </div>
-                                                <hr className="my-2" />
-                                                <div className="flex items-center mb-3">
-                                                    <div className="flex-grow text-gray-500 text-xs">Delivery Fee</div>
-                                                    <div><span className="text-xs">PHP</span> 450.00</div>
-                                                </div>
-                                                <div className="my-3">
-                                                    <label className="block">
-                                                        <span className="sr-only">Choose File</span>
-                                                        <input 
-                                                            type="file"
-                                                            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
-                                                    </label>
-                                                </div>
-                                                <button className="text-white bg-pizza-600 w-full text-sm py-2 hover:bg-pizza-500 transition-all ease-in-out rounded flex items-center justify-center" onClick={() => alert('SUCCESS')}>
-                                                    <div className="material-symbols-outlined mr-2">
-                                                        fingerprint
+                                            {
+                                                cart !== null && cart !== "" && cart !== undefined && cart.length > 0 ?
+                                                <div className="p-3">
+                                                    <div className="flex items-center">
+                                                        <div className="flex-grow text-gray-500 text-xs">Subtotal (20 items)</div>
+                                                        <div><span className="text-xs">PHP</span> 400.00</div>
                                                     </div>
-                                                    PLACE ORDER
-                                                </button>
-                                            </div>
+                                                    <div className="flex items-center">
+                                                        <div className="flex-grow text-gray-500 text-xs">Delivery Fee</div>
+                                                        <div><span className="text-xs">PHP</span> 50.00</div>
+                                                    </div>
+                                                    <hr className="my-2" />
+                                                    <div className="flex items-center mb-3">
+                                                        <div className="flex-grow text-gray-500 text-xs">Delivery Fee</div>
+                                                        <div><span className="text-xs">PHP</span> 450.00</div>
+                                                    </div>
+                                                    <div className="my-3">
+                                                        <label className="block">
+                                                            <span className="sr-only">Choose File</span>
+                                                            <input 
+                                                                type="file"
+                                                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                                                        </label>
+                                                    </div>
+                                                    <button className="text-white bg-pizza-600 w-full text-sm py-2 hover:bg-pizza-500 hover:shadow-none transition-all ease-in-out rounded-3xl flex items-center justify-center font-bold shadow-lg shadow-slate-300" onClick={() => alert('SUCCESS')}>
+                                                        <div className="material-symbols-outlined mr-2">
+                                                            fingerprint
+                                                        </div>
+                                                        PLACE ORDER
+                                                    </button>
+                                                </div>
+                                                :
+                                                <div className="p-3">
+                                                    <div className="text-center text-gray-400 text-sm italic">
+                                                        Empty cart
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                         </div>
                                     </div>

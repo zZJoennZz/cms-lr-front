@@ -8,10 +8,8 @@ import Image from "next/image"
 import axios from 'axios'
 import placeholderImg from '../../images/product_image_placeholder.png'
 
-const API_URL = "http://localhost:8000/"
-
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    let res = await axios.get(`${API_URL}dbwebapi/products/shop/getproductvariants`);
+    let res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}dbwebapi/products/shop/getproductvariants`)
 
     return {
         props: {
@@ -30,8 +28,11 @@ export default function Product(props : any) {
                 metaKeywords="Test"
                 metaRobots="Test"
             />
-            <Menu logout={() => props.logout()} />
-            
+            <Menu 
+                logout={() => props.logout()} 
+                removeFromCart={(prodId: number) => props.removeFromCart(prodId)} 
+                adjustCart={(e:any, prodId: number) => props.adjustCart(e, prodId)}
+            />
             <div className="w-12/12 md:w-10/12 m-auto py-10">
                 <div className="grid grid-cols-1 md:grid-cols-12 space-x-0 md:space-x-2">
                     <div className="col-span-3 order-2 md:order-1">

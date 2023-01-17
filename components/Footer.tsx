@@ -35,7 +35,11 @@ export default function Footer() {
                     </div>
                     <div className="flex flex-col items-start">
                         <div className="flex justify-center items-center mb-3">
-                            <div className="float-left w-12 h-12 bg-pizza-500 rounded-full flex justify-center items-center mr-4 text-white">A</div>
+                            <div className="float-left w-12 h-12 bg-pizza-500 rounded-full flex justify-center items-center mr-4 text-white">
+                                <span className="material-symbols-outlined">
+                                    phone_iphone
+                                </span>
+                            </div>
                             <div className="flex flex-col">
                                 <div className="font-bold text-slate-600">Contact Us</div>
                                 <div className="text-sm text-slate-500">0912 345 6789</div>
@@ -43,18 +47,26 @@ export default function Footer() {
                         </div>
 
                         <div className="flex justify-center items-center mb-3">
-                            <div className="float-left w-12 h-12 bg-pizza-500 rounded-full flex justify-center items-center mr-4 text-white">A</div>
+                            <div className="float-left w-12 h-12 bg-pizza-500 rounded-full flex justify-center items-center mr-4 text-white">
+                                <span className="material-symbols-outlined">
+                                    mail
+                                </span>
+                            </div>
                             <div className="flex flex-col">
-                                <div className="font-bold text-slate-600">Contact Us</div>
-                                <div className="text-sm text-slate-500">0912 345 6789</div>
+                                <div className="font-bold text-slate-600">Email Us</div>
+                                <div className="text-sm text-slate-500">info@lereussi.com</div>
                             </div>
                         </div>
 
                         <div className="flex justify-center items-center">
-                            <div className="float-left w-12 h-12 bg-pizza-500 rounded-full flex justify-center items-center mr-4 text-white">A</div>
+                            <div className="float-left w-12 h-12 bg-pizza-500 rounded-full flex justify-center items-center mr-4 text-white">
+                                <span className="material-symbols-outlined">
+                                    location_on
+                                </span>
+                            </div>
                             <div className="flex flex-col">
-                                <div className="font-bold text-slate-600">Contact Us</div>
-                                <div className="text-sm text-slate-500">0912 345 6789</div>
+                                <div className="font-bold text-slate-600">Location</div>
+                                <div className="text-sm text-slate-500">123 Street, Quezon City</div>
                             </div>
                         </div>
                     </div>
@@ -62,7 +74,10 @@ export default function Footer() {
             </div>
             <div className="bg-pizza-600 text-white w-full">
                 <div className="w-12/12 md:w-10/12 m-auto py-3 text-center md:text-left">
-                    Powered by T1 Solutions | Lé REUSSI © 2022
+                    Lé REUSSI © 2022
+                    <p className="text-xs">
+                        Powered by T1 Solutions
+                    </p>
                 </div>
             </div>
         </>

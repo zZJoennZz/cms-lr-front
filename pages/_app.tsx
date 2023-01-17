@@ -4,34 +4,77 @@ import { useRouter } from 'next/router'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { UserContext } from '../utils/user'
+import { CartContext } from '../utils/cart'
 import axios from 'axios'
 
-const API_URL = "http://localhost:8000/"
+import { CartList } from '../types/appTypes'
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export default function App({ Component, pageProps }: AppProps,) {
   const { query } = useRouter()
-  console.log(query)
+
   const [user, setUser] = React.useState(null)
+  const [itemCart, setItemCart] = React.useState(null)
   const [loginErr, setLoginErr] = React.useState("")
 
-  function addProductToCart() {
+  function addProductToCart(item: CartList) {
     let cart: any = []
+    if (item.qty === 0) {
+      alert('Enter quantity!')
+      return;
+    }
     if (localStorage.getItem('cart')) {
       cart = localStorage.getItem('cart')
       cart = cart ? JSON.parse(cart) : []
     }
-    cart.push({productId : 1, productName: 'test1'});
+
+    cart = cart.filter((d : CartList) => d.id === item.id)
+    
+    if (cart.length > 0) {
+      cart[0].qty = parseInt(cart[0].qty) + parseInt(item.qty)
+    } else {
+      cart.push(item)
+    }
     localStorage.setItem('cart', JSON.stringify(cart))
+
+    setItemCart(cart)
   }
 
-  function removeProductFromCart(productId: number) {
-    let storageCart: any;
-    // logic
+  function adjustCart(e: any, prodId: number) {
+    let storageCart: any
+    let product : any;
 
     storageCart = localStorage.getItem('cart')
     storageCart = storageCart ? JSON.parse(storageCart) : []
-    let product = storageCart.filter((product : any) => product.productId !== productId)
+    
+    if (parseInt(e.target.value) <= 0) {
+      let confirmRemove = confirm("Are you sure to remove this item?")
+      if (confirmRemove) {
+        product = storageCart.filter((product : any) => product.id !== prodId)
+        localStorage.setItem('cart', JSON.stringify(product))
+      } else {
+        e.target.value = 1
+        product = storageCart.filter((product : any) => product.id === prodId)
+        product[0].qty = e.target.value
+        localStorage.setItem('cart', JSON.stringify(product))
+      }
+    } else {
+      product = storageCart.filter((product : any) => product.id === prodId)
+      product[0].qty = e.target.value
+      localStorage.setItem('cart', JSON.stringify(product))
+    }
+    setItemCart(product)
+  }
+  
+  function removeProductFromCart(prodId: number) {
+    let storageCart: any
+
+    storageCart = localStorage.getItem('cart')
+    storageCart = storageCart ? JSON.parse(storageCart) : []
+    let product = storageCart.filter((product : any) => product.id !== prodId)
     localStorage.setItem('cart', JSON.stringify(product))
+    setItemCart(product)
   }
 
   async function checkIfLoggedIn() {
@@ -49,6 +92,15 @@ export default function App({ Component, pageProps }: AppProps,) {
 
   React.useEffect(() => {
     checkIfLoggedIn()
+    let cart: any
+    if (localStorage.getItem('cart')) {
+      cart = localStorage.getItem('cart')
+      cart = cart && cart.length > 0 ? JSON.parse(cart) : null
+    }
+    if (cart === undefined) {
+      cart = null
+    }
+    setItemCart(cart)
   }, []);
 
   if (pageProps.protected && !user) {
@@ -85,15 +137,18 @@ export default function App({ Component, pageProps }: AppProps,) {
 
   return (
     <UserContext.Provider value={user}>
-      <Component 
-        {...pageProps} 
-        login={(credentials : { username: string, password: string }) => login(credentials)} 
-        logout={() => logout()} 
-        addToCart={() => addProductToCart()} 
-        removeFromCart={(prodId: number) => removeProductFromCart(prodId)} 
-        loginErr={loginErr}
-        dismissLoginErr={() => setLoginErr('')}
-      />
+      <CartContext.Provider value={itemCart}>
+        <Component 
+          {...pageProps} 
+          login={(credentials : { username: string, password: string }) => login(credentials)} 
+          logout={() => logout()} 
+          addToCart={(e : CartList) => addProductToCart(e)} 
+          removeFromCart={(prodId: number) => removeProductFromCart(prodId)} 
+          loginErr={loginErr}
+          dismissLoginErr={() => setLoginErr('')}
+          adjustCart={(e:any, prodId:number) => adjustCart(e, prodId)}
+        />
+      </CartContext.Provider>
     </UserContext.Provider>
   )
 }

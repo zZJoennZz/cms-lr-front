@@ -114,6 +114,15 @@ interface CheckoutPayload {
   attachments: any;
 }
 
+interface CartList {
+  id: number;
+  product_name: string;
+  qty: number;
+  slug: string;
+  image_url: string;
+  price: number;
+}
+
 export type {
   PageList,
   Pages,
@@ -126,4 +135,5 @@ export type {
   CheckoutPayload,
   OrderDetail,
   OrderFee,
+  CartList,
 };
